@@ -9,4 +9,19 @@ unclassified:
   location:
     url: http://127.0.0.1:8080/
 jobs:
-  — file: /usr/local/seedjob.groovy
+  - script: >
+      pipelineJob('spring-petclinic') {
+        definition {
+          cpsScm {
+            scm {
+              git {
+                remote {
+                  url 'https://github.com/sarthak-m-das/Devops-Automation.git'
+                }
+                branch('main')
+                scriptPath 'Jenkinsfile'
+              }
+            }
+          }
+        }
+      }
