@@ -1,24 +1,6 @@
 version: '3.8'
 
 services:
-  jenkins:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: autojenkins
-    environment:
-      DOCKER_HOST: tcp://docker:2376
-      DOCKER_CERT_PATH: /certs/client
-      DOCKER_TLS_VERIFY: 1
-    ports:
-      - "8080:8080"
-      - "8000:8000"
-    networks:
-      - auto-jenkins-network
-    volumes:
-      - jenkins-data:/var/jenkins_home
-      - jenkins-docker-certs:/certs/client:ro
-
   sonarqube:
     image: sonarqube
     container_name: autosonarqube
@@ -37,8 +19,6 @@ networks:
     name: auto-jenkins-network
 
 volumes:
-  jenkins-data:
-  jenkins-docker-certs:
   sonarqube-data:
   sonarqube-logs:
   sonarqube-extensions:

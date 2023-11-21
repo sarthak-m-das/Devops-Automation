@@ -1,23 +1,14 @@
 #!/bin/bash
+docker-compose -f docker-compose1.yml up -d
 
-# Token API Endpoint
-TOKEN_API_ENDPOINT="http://localhost:9000/api/user_tokens/generate?name=my-Token&expirationDate=2024-01-01&type=GLOBAL_ANALYSIS_TOKEN"
+echo "40 seconds sleep..."
+sleep 40
 
-# Authorization Header
-AUTH_HEADER="Authorization: Basic YWRtaW46Yml0c29mUGFwZXI="
-
-# Make the API request and save the token to a file
-curl --location --request POST "$TOKEN_API_ENDPOINT" \
-     --header "$AUTH_HEADER" \
-     --data '' >> token.json
+echo "running sonar-config shell script..."
+source ./sonar-config.sh
 
 export SONARQUBE_TOKEN=$(jq -r '.token' token.json)
 
-echo "Token saved to token.json"
+echo "The token generated is $SONARQUBE_TOKEN"
 
-# Webhook API Endpoint
-
-curl --location --request POST "$WEBHOOK_API_ENDPOINT" \
-    --header 'Authorization: Basic YWRtaW46Yml0c29mUGFwZXI='
-
-echo "Webhook created"
+SONAR_TOKEN="$SONARQUBE_TOKEN" docker-compose -f docker-compose2.yml up -d
