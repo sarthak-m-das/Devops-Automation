@@ -7,6 +7,6 @@ jenkins:
          password: xyz
 unclassified:
   location:
-    url: http://server_ip:8080/
-job:
-  - file: /usr/local/pipeline.groovy
+    url: http://127.0.0.1:8080/
+jobs:
+  — file: /usr/local/seedjob.groovy
