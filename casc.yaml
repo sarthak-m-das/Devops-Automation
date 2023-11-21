@@ -5,9 +5,27 @@ jenkins:
       users:
        - id: xyz
          password: xyz
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - string:
+          description: "SonarQube token"
+          id: "84827f3c-43b9-4708-b767-e70f87e76e7a"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAAw3lQYizlbEqvDAajog6UxUm0JQFJpdq8vk7848c9bySHUa5/h2dDaayrV4KAJjJW4S3nrZIliZS4yEFNQ3vHSiw==}"
 unclassified:
   location:
     url: http://127.0.0.1:8080/
+  sonarGlobalConfiguration:
+    buildWrapperEnabled: false
+    installations:
+    - credentialsId: "84827f3c-43b9-4708-b767-e70f87e76e7a"
+      name: "SonarQube"
+      serverUrl: "http://10.0.0.14:9000"
+      triggers:
+        skipScmCause: false
+        skipUpstreamCause: false
 jobs:
   - script: >
       pipelineJob('spring-petclinic') {
