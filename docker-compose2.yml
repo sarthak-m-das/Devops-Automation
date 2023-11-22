@@ -6,6 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: autojenkins
+    depends_on:
+      - docker
     environment:
       DOCKER_HOST: tcp://docker:2376
       DOCKER_CERT_PATH: /certs/client
@@ -13,12 +15,27 @@ services:
       SONAR_TOKEN: ${SONAR_TOKEN}
     ports:
       - "8080:8080"
-      - "8000:8000"
     networks:
       - auto-jenkins-network
     volumes:
       - jenkins-data:/var/jenkins_home
       - jenkins-docker-certs:/certs/client:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  docker:
+    image: docker:dind
+    container_name: jenkins-docker
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: /certs
+    networks:
+      - auto-jenkins-network
+    volumes:
+      - jenkins-docker-certs:/certs/client
+      - jenkins-data:/var/jenkins_home
+    ports:
+      - "2376:2376"
+    command: --storage-driver overlay2
 
 networks:
   auto-jenkins-network:

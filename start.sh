@@ -1,11 +1,11 @@
 #!/bin/bash
-docker-compose -f docker-compose1.yml up -d
+# docker-compose -f docker-compose1.yml up -d
 
-echo "40 seconds sleep..."
-sleep 40
+# echo "40 seconds sleep..."
+# sleep 40
 
-echo "running sonar-config shell script..."
-source ./sonar-config.sh
+# echo "running sonar-config shell script..."
+# source ./sonar-config.sh
 
 export SONARQUBE_TOKEN=$(jq -r '.token' token.json)
 
