@@ -1,2 +1,2 @@
-[controller]
+[targets]
 petclinic ansible_ssh_user=username ansible_ssh_pass=password

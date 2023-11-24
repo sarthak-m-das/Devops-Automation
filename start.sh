@@ -1,7 +1,7 @@
 #!/bin/bash
-# docker-compose -f docker-compose1.yml up -d
+# docker-compose -f docker-compose-sonar.yml up -d
 
-# echo "40 seconds sleep..."
+# Wait for sonar container to be up
 # sleep 40
 
 # echo "running sonar-config shell script..."
@@ -11,37 +11,19 @@
 
 # echo "The token generated is $SONARQUBE_TOKEN"
 
-#!/bin/bash
-
 # Start petclinic container
-docker-compose -f docker-compose2.yml up -d
+docker-compose -f docker-compose-petclinic.yml up -d
 
-# Wait a bit to ensure the container is up
-sleep 10
-
-# Generate SSH key pair
-ssh-keygen -t rsa -b 4096 -f petclinic-key -N ""
-echo "SSH key pair generated."
-
-# Install SSH server in the petclinic container
-docker exec petclinic apt-get update
-docker exec petclinic apt-get install -y openssh-server
-
-# Start SSH service in the container
-docker exec petclinic service ssh start
-
-# Create a user for SSH (change 'username' and 'password' to your desired values)
-docker exec petclinic useradd -m username
-docker exec petclinic bash -c "echo username:password | chpasswd"
-
-# (Optional) Set up SSH key-based authentication
-docker exec petclinic mkdir -p /home/username/.ssh
-docker cp petclinic-key.pub petclinic:/home/username/.ssh/authorized_keys
-docker exec petclinic chown username:username /home/username/.ssh/authorized_keys
-docker exec petclinic chmod 600 /home/username/.ssh/authorized_keys
-docker exec petclinic chmod 700 /home/username/.ssh
-
-echo "SSH setup complete."
+# Wait for petclinic container to be up
+echo "Wait for petclinic container to be up..."
+# sleep 10
 
 # Start Jenkins
-docker-compose -f docker-compose3.yml up -d
+docker-compose -f docker-compose-jenkins.yml up -d
+
+# Wait for petclinic container to be up
+echo "Wait for jenkins container to be up..."
+# sleep 20
+
+echo "running petclinic-ssh-config shell script..."
+source ./petclinic-ssh-config.sh

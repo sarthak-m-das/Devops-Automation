@@ -7,9 +7,9 @@ ENV CASC_JENKINS_CONFIG /var/jenkins_home/casc.yaml
 # Switch to root to install packages
 USER root
 
-# Update packages and install Ansible and OpenSSH Server
+# Update packages and install Ansible, OpenSSH Server, and sshpass
 RUN apt-get update && \
-    apt-get install -y ansible openssh-server && \
+    apt-get install -y ansible openssh-server sshpass && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -28,10 +28,3 @@ COPY casc.yaml /var/jenkins_home/casc.yaml
 # Copy Ansible inventory, playbook, and SSH key
 COPY ansible-inventory /usr/share/jenkins/ref/inventory
 COPY ansible-playbook.yml /usr/share/jenkins/ref/playbook.yml
-COPY petclinic-key /usr/share/jenkins/ref/petclinic-key
-
-# Set correct permissions for the SSH key
-USER root
-RUN chmod 600 /usr/share/jenkins/ref/petclinic-key
-RUN chmod 755 /home
-USER jenkins
