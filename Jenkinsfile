@@ -1,37 +1,25 @@
 pipeline {
     agent any
     stages {
-        stage('Workspace Cleanup') {
-            steps {
-                cleanWs()
-            }
-        }
-        stage('Github Checkout') {
-            steps {
-                // Checks out the source code from the GitHub repository
-                git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic'
-            }
-        }
+        // stage('Unit Tests') {
+        //     steps {
+        //         sh './mvnw test -Dcheckstyle.skip=true'
+        //     }
+        // }
         
-        stage('Unit Tests') {
-            steps {
-                sh './mvnw test -Dcheckstyle.skip=true'
-            }
-        }
-        
-        stage('SonarQube Tests') {
-            environment {
-                scannerHome = tool 'SonarQube'
-            }
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=spring-petclinic -Dsonar.java.binaries=target/classes"
-                }
-                timeout(time: 10, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
+        // stage('SonarQube Tests') {
+        //     environment {
+        //         scannerHome = tool 'SonarQube'
+        //     }
+        //     steps {
+        //         withSonarQubeEnv('SonarQube') {
+        //             sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=spring-petclinic -Dsonar.java.binaries=target/classes"
+        //         }
+        //         timeout(time: 10, unit: 'MINUTES') {
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
+        // }
 
         stage('Build') {
             steps {
@@ -41,18 +29,39 @@ pipeline {
                 stash includes: 'target/*.jar', name: 'built-jars'
             }
         }
-
-        stage('Execute') {
+        
+        stage('Docker Image Build') {
             steps {
-                // Restore the stashed JAR file(s)
-                unstash 'built-jars'
-                // Now you can use the JAR file(s) in this stage
                 script {
-                    // Find the JAR file name since the wildcard '*' cannot be used directly with the java command
                     def jar = sh(script: "ls target/*.jar", returnStdout: true).trim()
-                    sh "JENKINS_NODE_COOKIE=dontKillMe nohup java -jar ${jar} --server.port=8000 &"
+                    sh "docker build -t sythe7/petclinic:${env.BUILD_ID} . --build-arg JAR_FILE=${jar}"
                 }
             }
         }
+
+        stage('Docker Image Push') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: '84827f3c-43b9-4708-b767-e70f87e76e7b', variable: 'dockerHubPassword')]) {
+                        sh "docker login -u sythe7 -p ${dockerHubPassword}"
+                    }
+                    sh "docker push sythe7/petclinic:${env.BUILD_ID}"
+                }
+            }
+        }
+
+        // stage('Deploy Docker Container') {
+        //     steps {
+        //         ansiblePlaybook credentialsId: 'dev-server', disableHostKeyChecking: true, extras: '-e TAG=${TAG} -e ENV=${DEPLOY_TO} --tags hello1', installation: 'ansible', inventory: '/home/src/ansible-scripts/inventory.inv', playbook: '/home/src/ansible-scripts/docker-deployment.yml'
+        //     }
+        // }
+        
+        // stage('Clean') {
+        //     steps {
+        //         sh "docker image rm -f ${REGISTRY}/hello1:${TAG}"
+        //         sh "docker system prune -f"
+                
+        //     }
+        // }
     }
 }
