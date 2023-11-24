@@ -33,4 +33,5 @@ COPY petclinic-key /usr/share/jenkins/ref/petclinic-key
 # Set correct permissions for the SSH key
 USER root
 RUN chmod 600 /usr/share/jenkins/ref/petclinic-key
+RUN chmod 755 /home
 USER jenkins

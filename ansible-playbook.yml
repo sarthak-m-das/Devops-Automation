@@ -5,7 +5,7 @@
   tasks:
     - name: Copy jar file to target
       copy:
-        src: /home/petclinic.jar
+        src: /var/jenkins_home/workspace/spring-petclinic/jars/petclinic.jar
         dest: /home/petclinic.jar
 
     - name: Run the jar file
