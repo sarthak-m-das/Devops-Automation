@@ -1,26 +1,7 @@
 version: '3.8'
 
 services:
-  jenkins:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: jenkins
-    environment:
-      DOCKER_HOST: tcp://docker:2376
-      DOCKER_CERT_PATH: /certs/client
-      DOCKER_TLS_VERIFY: 1
-      SONAR_TOKEN: abcd
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-    networks:
-      - auto-jenkins-network
-    volumes:
-      - jenkins-data:/var/jenkins_home
-      - jenkins-docker-certs:/certs/client:ro
-
-  deployment_container:
+  petclinic:
     image: ubuntu:latest
     container_name: petclinic
     command: tail -f /dev/null
@@ -28,12 +9,8 @@ services:
       - auto-jenkins-network
     ports:
       - "8000:8000"
-      - "22:22"
+      - "2200:22"
 
 networks:
   auto-jenkins-network:
     name: auto-jenkins-network
-
-volumes:
-  jenkins-data:
-  jenkins-docker-certs:

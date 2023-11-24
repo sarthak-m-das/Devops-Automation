@@ -1,10 +1,12 @@
 - hosts: targets
   become: yes
+  vars:
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
   tasks:
-  - name: Copy jar file to target
-    copy:
-      src: path_to_jar_on_jenkins
-      dest: path_to_deploy_on_target
+    - name: Copy jar file to target
+      copy:
+        src: /home/petclinic.jar
+        dest: /home/petclinic.jar
 
-  - name: Run the jar file
-    command: "java -jar path_to_deploy_on_target/your_app.jar"
+    - name: Run the jar file
+      command: "java -jar /home/petclinic.jar -server.port=8000"

@@ -37,10 +37,11 @@ pipeline {
             steps {
                 // Run the Maven package command
                 sh './mvnw package -DskipTests -Dcheckstyle.skip=true'
-                // Stash the JAR file(s) for use in later stages
-                stash includes: 'target/*.jar', name: 'built-jars'
+                // Copy the JAR file to a specific location
+                sh 'cp target/*.jar /home/petclinic.jar'
             }
         }
+
 
         // stage('Execute') {
         //     steps {
@@ -58,7 +59,7 @@ pipeline {
         stage('Ansible Deployment') {
             steps {
                 script {
-                    sh 'ansible-playbook -i /usr/share/jenkins/ref/inventory /usr/share/jenkins/ref/playbook.yml'
+                    sh 'ansible-playbook -i /usr/share/jenkins/ref/inventory /usr/share/jenkins/ref/playbook.yml -vvv'
                 }
             }
         }
