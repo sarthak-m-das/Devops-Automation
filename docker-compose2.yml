@@ -6,36 +6,29 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: jenkins
-    depends_on:
-      - docker
     environment:
       DOCKER_HOST: tcp://docker:2376
       DOCKER_CERT_PATH: /certs/client
       DOCKER_TLS_VERIFY: 1
-      SONAR_TOKEN: ${SONAR_TOKEN}
+      SONAR_TOKEN: abcd
     ports:
       - "8080:8080"
+      - "50000:50000"
     networks:
       - auto-jenkins-network
     volumes:
       - jenkins-data:/var/jenkins_home
       - jenkins-docker-certs:/certs/client:ro
-      - /var/run/docker.sock:/var/run/docker.sock
 
-  docker:
-    image: docker:dind
-    container_name: jenkins-docker
-    privileged: true
-    environment:
-      DOCKER_TLS_CERTDIR: /certs
+  deployment_container:
+    image: ubuntu:latest
+    container_name: petclinic
+    command: tail -f /dev/null
     networks:
       - auto-jenkins-network
-    volumes:
-      - jenkins-docker-certs:/certs/client
-      - jenkins-data:/var/jenkins_home
     ports:
-      - "2376:2376"
-    command: --storage-driver overlay2
+      - "8000:8000"
+      - "22:22"
 
 networks:
   auto-jenkins-network:

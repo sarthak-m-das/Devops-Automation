@@ -1,0 +1,10 @@
+- hosts: targets
+  become: yes
+  tasks:
+  - name: Copy jar file to target
+    copy:
+      src: path_to_jar_on_jenkins
+      dest: path_to_deploy_on_target
+
+  - name: Run the jar file
+    command: "java -jar path_to_deploy_on_target/your_app.jar"

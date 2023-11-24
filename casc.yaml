@@ -14,11 +14,6 @@ credentials:
           id: "84827f3c-43b9-4708-b767-e70f87e76e7a"
           scope: GLOBAL
           secret: ${SONAR_TOKEN}
-      - string:
-          description: "docker-hub"
-          id: "84827f3c-43b9-4708-b767-e70f87e76e7b"
-          scope: GLOBAL
-          secret: "abcdefghi"
 unclassified:
   location:
     url: http://127.0.0.1:8080/
@@ -55,9 +50,9 @@ jobs:
             scm {
               git {
                 remote {
-                  url 'https://github.com/sarthak-m-das/spring-petclinic.git'
+                  url 'https://github.com/sarthak-m-das/Devops-Automation.git'
                 }
-                branch('main')
+                branch('jar-ansible-ssh')
                 scriptPath 'Jenkinsfile'
               }
             }

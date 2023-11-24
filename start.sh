@@ -7,8 +7,8 @@
 # echo "running sonar-config shell script..."
 # source ./sonar-config.sh
 
-export SONARQUBE_TOKEN=$(jq -r '.token' token.json)
+# export SONARQUBE_TOKEN=$(jq -r '.token' token.json)
 
-echo "The token generated is $SONARQUBE_TOKEN"
+# echo "The token generated is $SONARQUBE_TOKEN"
 
-SONAR_TOKEN="$SONARQUBE_TOKEN" docker-compose -f docker-compose2.yml up -d
+SONAR_TOKEN=abcd docker-compose -f docker-compose2.yml up -d
