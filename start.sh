@@ -11,19 +11,12 @@
 
 # echo "The token generated is $SONARQUBE_TOKEN"
 
-# Start petclinic container
-docker-compose -f docker-compose-petclinic.yml up -d
-
-# Wait for petclinic container to be up
-echo "Wait for petclinic container to be up..."
-# sleep 10
-
 # Start Jenkins
 docker-compose -f docker-compose-jenkins.yml up -d
 
 # Wait for petclinic container to be up
-echo "Wait for jenkins container to be up..."
-# sleep 20
+echo "Wait for the container to be up..."
+sleep 20
 
 echo "running petclinic-ssh-config shell script..."
 source ./petclinic-ssh-config.sh

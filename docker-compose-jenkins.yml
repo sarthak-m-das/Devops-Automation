@@ -19,6 +19,21 @@ services:
     volumes:
       - jenkins-data:/var/jenkins_home
       - jenkins-docker-certs:/certs/client:ro
+  
+  petclinic:
+    build:
+      context: .
+      dockerfile: Dockerfile.petclinic
+      args:
+        SSH_USERNAME: petclinic
+        SSH_PASSWORD: petclinic
+    container_name: petclinic
+    command: tail -f /dev/null
+    networks:
+      - auto-jenkins-network
+    ports:
+      - "8000:8000"
+      - "2200:22"
 
 networks:
   auto-jenkins-network:

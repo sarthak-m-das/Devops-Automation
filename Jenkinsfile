@@ -35,7 +35,6 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Run the Maven package command
                 sh './mvnw package -DskipTests -Dcheckstyle.skip=true'
                 // Copy the JAR file to a specific location
                 sh 'mkdir -p $WORKSPACE/jars && cp target/*.jar $WORKSPACE/jars/petclinic.jar'

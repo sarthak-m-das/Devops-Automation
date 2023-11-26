@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-# Install Java 17
+# Installing Java 17
 RUN apt-get update && \
     apt-get install -y software-properties-common && \
     add-apt-repository ppa:openjdk-r/ppa && \
@@ -9,10 +9,22 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Set the JAVA_HOME environment variable
-ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
+# Installing OpenSSH Server
+RUN apt-get update && \
+    apt-get install -y openssh-server && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Set the path to include Java 17
+# JAVA_HOME environment variable
+ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH $JAVA_HOME/bin:$PATH
 
+# Create a new user
+ARG SSH_USERNAME
+ARG SSH_PASSWORD
+RUN useradd -m ${SSH_USERNAME} && \
+    echo "${SSH_USERNAME}:${SSH_PASSWORD}" | chpasswd
+RUN service ssh start 
+
 CMD ["tail", "-f", "/dev/null"]
+

@@ -1,2 +1,2 @@
 [targets]
-petclinic ansible_ssh_user=username ansible_ssh_pass=password
+petclinic ansible_ssh_user=petclinic ansible_ssh_pass=petclinic
