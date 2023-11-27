@@ -5,9 +5,9 @@
     - name: Copy jar file to target
       copy:
         src: /var/jenkins_home/workspace/spring-petclinic/jars/petclinic.jar
-        dest: /home/petclinic/petclinic.jar
+        dest: /home/username/petclinic.jar
 
     - name: Run the jar file
-      shell: "nohup java -jar /home/petclinic/petclinic.jar --server.port=8000 > /home/petclinic/petclinic.log 2>&1 &"
+      shell: "nohup java -jar /home/username/petclinic.jar --server.port=8000 > /home/username/petclinic.log 2>&1 &"
       async: 10
       poll: 0

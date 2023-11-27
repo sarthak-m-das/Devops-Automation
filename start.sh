@@ -15,8 +15,8 @@
 docker-compose -f docker-compose-jenkins.yml up -d
 
 # Wait for petclinic container to be up
-echo "Wait for the container to be up..."
+echo "Wait for the containers to be up..."
 sleep 20
 
 echo "running petclinic-ssh-config shell script..."
-source ./petclinic-ssh-config.sh
+source ./ssh-key-config.sh
