@@ -13,7 +13,7 @@ credentials:
           description: "SonarQube token"
           id: "84827f3c-43b9-4708-b767-e70f87e76e7a"
           scope: GLOBAL
-          secret: ${SONAR_TOKEN}
+          secret: ${SONARQUBE_TOKEN}
 unclassified:
   location:
     url: http://127.0.0.1:8080/

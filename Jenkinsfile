@@ -12,25 +12,25 @@ pipeline {
             }
         }
         
-        // stage('Unit Tests') {
-        //     steps {
-        //         sh './mvnw test -Dcheckstyle.skip=true'
-        //     }
-        // }
+        stage('Unit Tests') {
+            steps {
+                sh './mvnw test -Dcheckstyle.skip=true'
+            }
+        }
         
-        // stage('SonarQube Tests') {
-        //     environment {
-        //         scannerHome = tool 'SonarQube'
-        //     }
-        //     steps {
-        //         withSonarQubeEnv('SonarQube') {
-        //             sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=spring-petclinic -Dsonar.java.binaries=target/classes"
-        //         }
-        //         timeout(time: 10, unit: 'MINUTES') {
-        //             waitForQualityGate abortPipeline: true
-        //         }
-        //     }
-        // }
+        stage('SonarQube Tests') {
+            environment {
+                scannerHome = tool 'SonarQube'
+            }
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=spring-petclinic -Dsonar.java.binaries=target/classes"
+                }
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
 
         stage('Build') {
             steps {
