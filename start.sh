@@ -10,8 +10,10 @@ source ./sonar-config.sh
 
 export SONARQUBE_TOKEN=$(jq -r '.token' token.json)
 
+echo "$SONARQUBE_TOKEN"
+
 # Start Jenkins
-SONARQUBE_TOKEN="$SONARQUBE_TOKEN" docker-compose -f docker-compose-jenkins.yml up -d
+SONAR_TOKEN="$SONARQUBE_TOKEN" docker-compose -f docker-compose-jenkins.yml up -d
 
 # Wait for petclinic container to be up
 echo "Wait for the containers to be up..."

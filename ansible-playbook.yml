@@ -9,5 +9,5 @@
 
     - name: Run the jar file
       shell: "nohup java -jar /home/username/petclinic.jar --server.port=8000 > /home/username/petclinic.log 2>&1 &"
-      async: 10
+      async: 30
       poll: 0
