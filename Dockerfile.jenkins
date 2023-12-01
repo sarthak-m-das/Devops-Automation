@@ -17,6 +17,9 @@ RUN apt-get update && \
 RUN mkdir /var/run/sshd && \
     chmod 0755 /var/run/sshd
 
+# Copy Groovy script for disabling CSRF
+COPY disableCSRF.groovy /var/jenkins_home/init.groovy.d/disableCSRF.groovy
+
 # Switch back to the Jenkins user
 USER jenkins
 
